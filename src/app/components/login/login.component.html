@@ -1,0 +1,30 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+    class="d-flex flex-column align-items-center justify-content-center vh-100">
+    <div class="w-25">
+        <label for="email" class="form-label">Usuario</label>
+        <input type="email" class="form-control" formControlName="email" id="email" placeholder="Usuario">
+        <div *ngIf="loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched"
+            class="text-danger">El email es
+            requerido</div>
+        <div *ngIf="loginForm.get('email')?.errors?.['email'] && loginForm.get('email')?.touched" class="text-danger">El
+            email no es
+            válido</div>
+
+        <label for="password" class="form-label mt-3">Clave</label>
+        <input type="password" class="form-control" formControlName="password" id="password" placeholder="Clave">
+        <div *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched"
+            class="text-danger">La
+            clave es requerida</div>
+        <div *ngIf="loginForm.get('password')?.errors?.['minlength'] && loginForm.get('password')?.touched"
+            class="text-danger">La
+            clave debe tener al menos 10 caracteres</div>
+        <div *ngIf="loginForm.get('password')?.errors?.['pattern'] && loginForm.get('password')?.touched"
+            class="text-danger">La clave debe tener al menos una letra mayúscula, una minúscula y un carácter especial.
+        </div>
+
+    </div>
+    <div class="mt-4 w-25">
+        <button type="submit" class="btn btn-primary" style="width: 100%;"
+            [disabled]="!loginForm.valid">Ingresar</button>
+    </div>
+</form>

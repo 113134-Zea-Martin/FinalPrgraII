@@ -1,0 +1,62 @@
+<form [formGroup]="nuevoModoForm" (ngSubmit)="guardar()" class="p-4 bg-white rounded">
+    <div>
+        <p class="text-lg font-medium">Nuevo Modo</p>
+        <div class="mt-4">
+            <p class="text-gray-700 font-medium">Información general</p>
+            <div class="mt-2">
+                <label class="block font-medium text-gray-700">Usuario</label>
+                <input type="text" formControlName="usuario" class="form-control" readonly>
+            </div>
+            <div class="mt-2">
+                <label class="block font-medium text-gray-700">Nombre</label>
+                <input type="text" formControlName="nombre" class="form-control">
+            </div>
+            <div *ngIf="nuevoModoForm.get('nombre')?.errors?.['required'] && nuevoModoForm.get('nombre')?.touched"
+                class="text-danger">
+                <small>El nombre es requerido</small>
+            </div>
+            <div *ngIf="nuevoModoForm.get('nombre')?.errors?.['minlength'] && nuevoModoForm.get('nombre')?.touched"
+                class="text-danger">
+                <small>El nombre debe tener al menos 5 caracteres</small>
+            </div>
+            <div *ngIf="nuevoModoForm.get('nombre')?.errors?.['nameUsed'] && nuevoModoForm.get('nombre')?.touched"
+                class="text-danger">
+                <small>El nombre ya está en uso</small>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <p class="text-gray-700 font-medium">Zonas</p>
+        <button (click)="addZona()" class="btn btn-primary mt-2">
+            + Nueva Zona
+        </button>
+        <div formArrayName="zonas" class="mt-2">
+            <div *ngIf="zonasFormArray.length == 0" class="text-gray-500">
+                No hay zonas cargadas...
+            </div>
+            <div *ngFor="let zona of zonasFormArray.controls; let i = index" class="mt-2 p-4 rounded bg-gray-100" [formGroupName]="i" >
+                <div class="d-flex justify-content-between align-items-center">
+                    <label class="font-medium text-gray-700">Zona #{{i+1}}</label>
+                    <button (click)="removeZona(i)" class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </div>
+                <select formControlName="zone" class="form-control mt-2">
+                    <option *ngFor="let z of zones" [value]="z.id">{{z.name}}</option>
+                </select>
+            </div>
+            <div *ngIf="nuevoModoForm.get('zonas')?.errors?.['sameZones'] && nuevoModoForm.get('zonas')?.touched"
+                class="text-danger">
+                <small>Debe seleccionar al menos una zona</small>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 d-flex justify-content-end">
+        <button (click)="cancel()" class="btn btn-secondary">
+            Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary ms-2">
+            Guardar
+        </button>
+    </div>
+</form>

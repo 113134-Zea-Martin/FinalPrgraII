@@ -1,0 +1,24 @@
+<div class="container mt-4">
+    <p class="h5">Desde este panel usted puede manejar su alarma:</p>
+    <div class="mb-3">
+        <label for="mode" class="form-label">Modo</label>
+        <form [formGroup]="group" (ngSubmit)="onSubmit()">
+            <div class="input-group mb-3">
+                <select id="mode" formControlName="mode" class="form-select" aria-label="Elija el modo...">
+                    <option value="" selected>Elija el modo...</option>
+                    @for (item of alarmModes; track $index) {
+                    <option value="{{item.id}}">{{item.name}}</option>
+                    }
+                </select>
+            </div>
+            <div *ngIf="group.get('mode')?.errors?.['required'] && group.get('mode')?.touched" class="text-danger">
+                <small>Debe seleccionar un modo.</small>
+            </div>
+            @if (!alarmActive) {
+            <button type="submit" class="btn btn-outline-success btn-lg w-100 fw-bold" [disabled]="!group.valid"> ARMAR </button>
+            } @else {
+            <button type="submit" class="btn btn-outline-danger btn-lg w-100 fw-bold"  [disabled]="!group.valid"> DESARMAR </button>
+            }
+        </form>
+    </div>
+</div>
